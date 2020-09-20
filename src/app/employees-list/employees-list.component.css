@@ -1,0 +1,43 @@
+table {
+    width: 100%;
+}
+
+span {
+    border: 1px solid black;
+    min-width: 100px;
+    display: table-cell;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+mat-icon {
+    margin: 3px;
+    /* color: white; */
+    padding: 6px;
+    border-radius: 20px;
+}
+
+.edit {
+    color: rgb(9, 175, 9);
+}
+
+.delete {
+    color: red;
+}
+
+.add-new {
+    margin: 10px;
+    float: right;
+}
+
+.add-new-button {
+    background-color: rgb(0, 157, 255);
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.26);
+    outline: none;
+}
