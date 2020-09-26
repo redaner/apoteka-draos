@@ -234,9 +234,9 @@
       visibility: hidden;
     }
   }
-</style>  
+</style>
 
-<div class="menu">
+<div *ngIf="logged" class="menu">
   <a class="menu-item" routerLink="/employees" routerLinkActive="active">Employees</a>
   <a class="menu-item" routerLink="/products" routerLinkActive="active">Products</a>
   <a class="menu-item" routerLink="/checkout" routerLinkActive="active">Checkout</a>

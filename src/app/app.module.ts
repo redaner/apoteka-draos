@@ -56,6 +56,7 @@ import { CreateProductComponent } from './create-product/create-product.componen
 import { GodService } from './services/god.service';
 import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     CreateItemComponent,
     CreateEmployeeComponent,
     CreateProductComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
       {path: 'employees', component: EmployeesListComponent},
       {path: 'products', component: ItemsListComponent},
       {path: 'checkout', component: CheckoutComponent},
+      {path: 'login', component: LoginComponent},
       {path: 'logout', component: EmployeesListComponent},
       {path: 'create-employee', component: CreateEmployeeComponent},
       {path: 'create-product', component: CreateProductComponent},
