@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import 'rxjs/add/operator/map';
 import { Employee } from '../models/employee';
 import { Product } from '../models/product';
 import { Receipt } from '../models/receipt';
@@ -37,109 +37,110 @@ export class GodService {
 
     this.http.post(this.endpoints.getResource, this.getResourceBody('employees.json', []))
     .subscribe( (x: any) => {
+      console.log('Sta smo dobili: ', x);
       this.employees = x.data;
     });
     this.http.post(this.endpoints.getResource, this.getResourceBody('products.json', []))
     .subscribe( (x: any) => {
+      console.log("Products data: ", x);
       this.products = x.data;
     });
-    this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))
+    /*this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))
     .subscribe( (x: any) => {
       this.receipts = x.data;
-    });
+    });*/
 
   }
 
-  private saveResource(name: string, data: Array<any>) {
-    this.http.post(this.endpoints.saveResource, this.getResourceBody(name, data))
-    .subscribe( (x: any) => {
-      console.log(x);
-    });
+  private async saveResource(name: string, data: Array<any>) {
+    let ddata;
+    await this.http.post(this.endpoints.saveResource, this.getResourceBody(name, data))
+    .pipe(map( (res: Array<any>) => { ddata = res; })).toPromise();
+    return Promise.resolve(ddata);
   }
 
-  private loadResource(name: string, data: Array<any>) {
-    this.http.post(this.endpoints.getResource, this.getResourceBody(name, data))
-    .subscribe( (x: any) => {
-      if (name === 'employees.json') {
-        this.employees = x.data;
-      } else if (name === 'products.json') {
-        this.products = x.data;
-      } else if (name === 'receipts.json') {
-              this.receipts = x.data;
-      }
-    });
-
+  private async loadResource(name: string, data: Array<any>) {
+    let ddata = [];
+    await this.http.post(this.endpoints.getResource, this.getResourceBody(name, data))
+    .pipe(map( (res: Array<any>) => {ddata = res; console.log(res)})).toPromise();
+    return Promise.resolve(ddata);
   }
 
 
-  public getAllEmployees(): Employee[] {
-    this.loadResource('employees.json', []);
-    return this.employees;
+  public async getAllEmployees(): Promise<Employee[]> {
+    this.employees = await this.loadResource('employees.json', []);
+    return Promise.resolve(this.employees);
   }
 
-  public getEmployeeByID(id: number): Employee {
-    this.loadResource('employees.json', []);
+  public async getEmployeeByID(id: number): Promise<Employee> {
+    this.employees = await this.loadResource('employees.json', []);
     for (const empC of this.employees) {
       if (empC.id === empC.id) {
-        return empC;
+        return Promise.resolve(empC);
       }
     }
   }
 
-  public addEmployee(emp: Employee) {
+  public async addEmployee(emp: Employee) : Promise<Employee[]> {
     this.employees.push(emp);
-    this.saveResource('employees.json', this.employees);
+    await this.saveResource('employees.json', this.employees);
+    return Promise.resolve(this.employees);
     // Save all emp
   }
 
-  public updateEmployee(emp: Employee) {
+  public async updateEmployee(emp: Employee) : Promise<Employee[]> {
     for (let empC of this.employees) {
       if (empC.id === emp.id) {
         empC = emp;
       }
     }
-    this.saveResource('employees.json', this.employees);
+    await this.saveResource('employees.json', this.employees);
+    return Promise.resolve(this.employees);
   }
 
-  public deleteEmployee(emp: Employee) {
+  public async deleteEmployee(emp: Employee) : Promise<Employee[]> {
     const index = this.employees.indexOf(emp);
     this.employees.splice(index);
-    this.saveResource('employees.json', this.employees);
+    await this.saveResource('employees.json', this.employees);
+    return Promise.resolve(this.employees);
   }
 
 
-  public getAllProducts(): Product[] {
-    this.loadResource('products.json', []);
-    return this.products;
+  public async getAllProducts(): Promise<Product[]> {
+    this.products = await this.loadResource('products.json', []);
+    return Promise.resolve(this.products);
   }
 
-  public getProductByID(id: number): Product {
-    this.loadResource('products.json', []);
+  public async getProductByID(id: number): Promise<Product> {
+    this.products = await this.loadResource('products.json', []);
     for (const prod of this.products) {
-      if (prod.id === id) {
-        return prod;
+      if (prod.code === id) {
+        return Promise.resolve(prod);
       }
     }
   }
 
-  public addProduct(prod: Product) {
+  public async addProduct(prod: Product): Promise<Product[]> {
     this.products.push(prod);
-    this.saveResource('products.json', this.products);
+    await this.saveResource('products.json', this.products);
+    return Promise.resolve(this.products);
   }
 
-  public updateProduct(prod: Product) {
+  public async updateProduct(prod: Product): Promise<Product[]> {
     for (let prodC of this.products) {
-      if (prodC.id === prod.id) {
+      if (prodC.code === prod.code) {
         prodC = prod;
       }
     }
-    this.saveResource('products.json', this.products);
+    await this.saveResource('products.json', this.products);
+    return Promise.resolve(this.products);
   }
 
-  public deleteProduct(prod: Product) {
+  public async deleteProduct(prod: Product) : Promise<Product[]> {
     const index = this.products.indexOf(prod);
     this.products.splice(index);
-    this.saveResource('products.json', this.products);
+    await this.saveResource('products.json', this.products);
+    return Promise.resolve(this.products);
   }
 
   public getAllReceipts(): Receipt[] {
@@ -167,13 +168,11 @@ export class GodService {
       const productIndex = this.products.indexOf(item.product);
       const product = this.products[productIndex];
       this.updateProduct(new Product ({
-        id: product.id,
+        id: product.code,
         manufacturer: product.manufacturer,
         name: product.name,
-        currentAmount: product.currentAmount + item.amount,
-        minAmount: product.minAmount,
-        maxAmount: product.maxAmount,
-        perscriptionNeeded: product.perscriptionNeeded,
+        stock: product.stock + item.amount,
+        perscription: product.perscription,
         price: product.price,
         note: product.note,
         categories: product.categories

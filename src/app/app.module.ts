@@ -53,6 +53,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateProductComponent } from './create-product/create-product.component';
+import { GodService } from './services/god.service';
+import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { CreateProductComponent } from './create-product/create-product.componen
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {path: 'employees', component: EmployeesListComponent},
       {path: 'products', component: ItemsListComponent},
@@ -90,7 +93,7 @@ import { CreateProductComponent } from './create-product/create-product.componen
     MatRadioModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [GodService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
