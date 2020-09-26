@@ -44,3 +44,7 @@ form {
     font-size: 20px;
     padding-bottom: 10px;
 }
+
+.add-new-button:hover {
+    cursor: pointer;
+}

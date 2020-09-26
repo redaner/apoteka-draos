@@ -76,6 +76,7 @@ import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angula
       {path: 'logout', component: EmployeesListComponent},
       {path: 'create-employee', component: CreateEmployeeComponent},
       {path: 'create-product', component: CreateProductComponent},
+      {path: 'edit-employee/:id', component: CreateEmployeeComponent},
       {path: '', redirectTo: 'employees', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,
