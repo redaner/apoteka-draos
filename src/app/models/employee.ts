@@ -10,7 +10,7 @@ export class Employee {
 
   constructor(data?: any) {
     this.id = data.id;
-    this.name = data.firstName;
+    this.name = data.name;
     this.role = data.role;
     this.birthDate = data.birthDate;
     this.hireDate = data.hireDate;

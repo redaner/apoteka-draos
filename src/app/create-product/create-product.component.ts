@@ -30,7 +30,6 @@ export class CreateProductComponent implements OnInit {
   }
 
   submit() {
-    debugger;
     if (!this.productForm.valid) {
       this.show = true;
       return;

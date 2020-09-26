@@ -1,0 +1,39 @@
+.delete {
+    color: red;
+    font-size: 60px;
+    width: 60px;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.buttons {
+    padding: 25px;
+    padding-bottom: 0px;
+}
+
+input {
+    border: none;
+    padding: 10px;
+    outline: none;
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+    width: 100px;
+    border-radius: 4px;
+}
+
+input:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
+.confirm {
+    background-color: rgb(255, 85, 85);
+}
+
+.cancel {
+    background-color: lightslategrey;
+}

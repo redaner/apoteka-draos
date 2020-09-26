@@ -89,11 +89,12 @@ export class GodService {
   }
 
   public async updateEmployee(emp: Employee) : Promise<Employee[]> {
-    for (let empC of this.employees) {
-      if (empC.id == emp.id) {
-        empC = emp;
+    for (let i = 0; i < this.employees.length; i++) {
+      if (this.employees[i].id == emp.id) {
+        this.employees[i] = emp;
       }
     }
+    
     await this.saveResource('employees.json', this.employees);
     return Promise.resolve(this.employees);
   }
@@ -179,7 +180,7 @@ export class GodService {
       }));
     }
     this.receipts.splice(index,1);
-    this.saveResource('products.json', this.products);
+      this.saveResource('products.json', this.products);
     this.saveResource('receipts.json', this.receipts);
   }
 

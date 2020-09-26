@@ -55,6 +55,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateProductComponent } from './create-product/create-product.component';
 import { GodService } from './services/god.service';
 import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angular/common/http';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angula
     CheckoutComponent,
     CreateItemComponent,
     CreateEmployeeComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,9 +94,11 @@ import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angula
     MatSelectModule,
     MatFormFieldModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   providers: [GodService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule { }

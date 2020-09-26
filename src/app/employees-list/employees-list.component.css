@@ -21,14 +21,25 @@ mat-icon {
 
 .edit {
     color: rgb(9, 175, 9);
+    outline: none;
+}
+
+.edit:hover {
+    cursor: pointer;
+    color: rgb(77, 240, 77);
 }
 
 .delete {
     color: red;
 }
 
+.delete:hover {
+    cursor: pointer;
+    color: rgb(255, 137, 137);
+}
+
 .add-new {
-    margin: 10px;
+    margin: 20px;
     float: right;
 }
 
@@ -45,4 +56,11 @@ mat-icon {
 .add-new-button:hover {
     cursor: pointer;
     background-color: rgb(57, 177, 252);
+}
+
+.title {
+    float: left;
+    margin: 20px;
+    font-weight: bold;
+    font-size: 26px;
 }

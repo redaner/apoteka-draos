@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Employee } from '../models/employee';
 import { GodService } from '../services/god.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class CreateEmployeeComponent implements OnInit {
 
   constructor( private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private godService: GodService) { 
+    private godService: GodService,
+    private router: Router) { 
       console.log(route);
     }
 
@@ -43,11 +45,27 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   submit() {
-    debugger
     if (!this.employeeForm.valid) {
       this.show = true;
       return;
     }
+    
+    this.godService.getAllEmployees().then(employees => {
+      let maximumID = Math.max.apply(Math, employees.map(function(o) { return o.id; }))
+      let newUserID = maximumID + 1;
+
+      if (this.id) {
+        let updatedEmployee = new Employee(this.employeeForm.value);
+        updatedEmployee.id = this.id;
+        this.godService.updateEmployee(updatedEmployee);
+      } else {
+        let newEmployee = new Employee(this.employeeForm.value);
+        newEmployee.id = newUserID;
+        this.godService.addEmployee(newEmployee);
+      }
+
+      this.router.navigate(['/employees']);
+    })
     console.log(this.employeeForm.value);
   }
 
