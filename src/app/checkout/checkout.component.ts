@@ -1,3 +1,4 @@
+import { summaryFileName } from '@angular/compiler/src/aot/util';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule, MatTab } from '@angular/material';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -28,6 +29,9 @@ const CHECKOUT_DATA: CheckoutItem[] = [
   {name: 'Brufen', amount: 4, price: 20.00},
   {name: 'Brufen', amount: 4, price: 20.00},
   {name: 'Brufen', amount: 4, price: 20.00},
+  {name: 'Brufen', amount: 4, price: 20.00},
+  {name: 'Brufen', amount: 4, price: 20.00},
+  {name: 'Brufen', amount: 4, price: 20.00}
 ]
 
 @Component({
@@ -48,6 +52,12 @@ export class CheckoutComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  calculateTotal() {
+    let sum: number = 0;
+    CHECKOUT_DATA.forEach(a => sum += a.price);
+    return sum;
   }
   
   constructor() { }

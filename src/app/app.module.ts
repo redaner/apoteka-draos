@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatTableModule } from '@angular/material';
+import { MatFormFieldModule, MatTableModule } from '@angular/material';
 import {A11yModule} from '@angular/cdk/a11y';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {PortalModule} from '@angular/cdk/portal';
@@ -50,6 +50,9 @@ import { ItemsListComponent } from './items-list/items-list.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CreateItemComponent } from './create-item/create-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateProductComponent } from './create-product/create-product.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EmployeesListComponent,
     ItemsListComponent,
     CheckoutComponent,
-    CreateItemComponent
+    CreateItemComponent,
+    CreateEmployeeComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
@@ -66,13 +71,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       {path: 'products', component: ItemsListComponent},
       {path: 'checkout', component: CheckoutComponent},
       {path: 'logout', component: EmployeesListComponent},
+      {path: 'create-employee', component: CreateEmployeeComponent},
+      {path: 'create-product', component: CreateProductComponent},
       {path: '', redirectTo: 'employees', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

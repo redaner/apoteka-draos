@@ -1,0 +1,61 @@
+<div class="container">
+    <form [formGroup]="employeeForm" (submit)="submit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="(show && employeeForm.controls.name.errors) || (employeeForm.controls.name.touched && employeeForm.controls.name.invalid)">
+                <span *ngIf="employeeForm.controls.name.errors.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role">
+                <mat-option value="manager">Manager</mat-option>
+                <mat-option value="employee">Employee</mat-option>
+            </mat-select>
+            <mat-error *ngIf="(show && employeeForm.controls.role.errors) || (employeeForm.controls.role.touched && employeeForm.controls.role.invalid)">
+                <span *ngIf="employeeForm.controls.role.errors.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Birth date</mat-label>
+            <input matInput [matDatepicker]="birthday" formControlName="birthday">
+            <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
+            <mat-datepicker #birthday></mat-datepicker>
+            <mat-error *ngIf="(show && employeeForm.controls.birthday.errors) || (employeeForm.controls.birthday.touched && employeeForm.controls.birthday.invalid)">
+                <span *ngIf="employeeForm.controls.birthday.errors.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Hire date</mat-label>
+            <input matInput [matDatepicker]="hiredate" formControlName="hiredate">
+            <mat-datepicker-toggle matSuffix [for]="hiredate"></mat-datepicker-toggle>
+            <mat-datepicker #hiredate></mat-datepicker>
+            <mat-error *ngIf="(show && employeeForm.controls.hiredate.errors) || (employeeForm.controls.hiredate.touched && employeeForm.controls.hiredate.invalid)">
+                <span *ngIf="employeeForm.controls.hiredate.errors.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput  formControlName="email">
+            <mat-error *ngIf="(show && employeeForm.controls.email.errors) || (employeeForm.controls.email.touched && employeeForm.controls.email.invalid)">
+                <span *ngIf="employeeForm.controls.email.errors.required">This field is mandatory.</span>
+                <span *ngIf="employeeForm.controls.email.errors.pattern">Email is invalid.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="(show && employeeForm.controls.password.errors) || (employeeForm.controls.password.touched && employeeForm.controls.password.invalid)">
+                <span *ngIf="employeeForm.controls.password.errors.required">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button class="submit-button" type="submit">Submit</button>
+    </form>
+</div>
