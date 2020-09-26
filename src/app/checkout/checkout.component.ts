@@ -45,10 +45,11 @@ export class CheckoutComponent implements AfterViewInit {
   private RECEIPTS_DATA;
   private dataSource;
   private checkoutItems;
+  private invalidInput: boolean = false;
   private receipt: Receipt;
 
   displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'additional', 'actions'];
-  displayedColumnsCheckout: string[] = ['name', 'amount', 'price'];
+  displayedColumnsCheckout: string[] = ['code','name', 'amount', 'price', 'actions'];
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
@@ -67,12 +68,29 @@ export class CheckoutComponent implements AfterViewInit {
   }
 
   addCheckoutItem(item: Product) {
-    this.CHECKOUT_DATA.push( {
-      code: item.code,
-      name: item.name,
-      amount: 1,
-      price: item.price
-    });
+    const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
+    if(index != -1) {
+      this.CHECKOUT_DATA[index].amount += 1;
+      this.CHECKOUT_DATA[index].price += item.price;
+    } else {
+      this.CHECKOUT_DATA.push( {
+        code: item.code,
+        name: item.name,
+        amount: 1,
+        price: item.price
+      });
+    }
+    this.updateCheckoutItems();
+  }
+
+  removeCheckoutItem(item: CheckoutItem) {
+    const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
+    this.CHECKOUT_DATA.splice(index);
+    this.updateCheckoutItems();
+  }
+
+  updateCheckoutItems() {
+    this.checkoutItems = new MatTableDataSource(this.CHECKOUT_DATA);
   }
 
   findNextID(receipts: Array<any>) {
@@ -93,6 +111,28 @@ export class CheckoutComponent implements AfterViewInit {
     return items;
   }
 
+
+  updateAmountAndPrice(event: any, element: CheckoutItem) {
+    console.log(event);
+    if(!Number.isInteger(Number(event.target.value))) {
+      this.invalidInput = true;
+      let index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
+      if(index != -1) {
+        this.CHECKOUT_DATA[index].price = 0;
+        this.updateCheckoutItems();
+      }
+      return;
+    }
+    this.invalidInput = false;
+    let pindex = this.PRODUCT_DATA.findIndex(x => x.code == element.code);
+    let index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
+    if(index != -1) {
+      this.CHECKOUT_DATA[index].amount = parseInt(event.target.value, 10);
+      this.CHECKOUT_DATA[index].price = Number((parseInt(event.target.value, 10) * this.PRODUCT_DATA[pindex].price).toFixed(2));
+      this.updateCheckoutItems();
+    }
+  }
+
   mapReceiptToCheckoutItems(receipt: Receipt) {
     this.CHECKOUT_DATA = [];
     receipt.items.forEach( (x: ReceiptItem) => {
@@ -111,6 +151,7 @@ export class CheckoutComponent implements AfterViewInit {
     this.receipt.total = this.calculateTotal(),
     this.receipt.date = new Date();
     this.receipt.employee = 'Mirza Mesihovic';
+    alert(this.receipt);
     console.log(this.receipt);
   }
 

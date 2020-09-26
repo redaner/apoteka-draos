@@ -44,8 +44,8 @@ export class ItemsListComponent implements AfterViewInit {
 
   public mapCategories(categories: Array<Category>): string {
     let result = '';
-    if (categories.length === 0) { return result; }
-    else if (categories.length === 1) {
+    if (categories.length == 0) { return result; }
+    else if (categories.length == 1) {
       result += categories[0]
     }
     else if (categories.length >= 2) {

@@ -90,7 +90,7 @@ export class GodService {
 
   public async updateEmployee(emp: Employee) : Promise<Employee[]> {
     for (let empC of this.employees) {
-      if (empC.id === emp.id) {
+      if (empC.id == emp.id) {
         empC = emp;
       }
     }
@@ -100,7 +100,7 @@ export class GodService {
 
   public async deleteEmployee(emp: Employee) : Promise<Employee[]> {
     const index = this.employees.indexOf(emp);
-    this.employees.splice(index);
+    this.employees.splice(index,1);
     await this.saveResource('employees.json', this.employees);
     return Promise.resolve(this.employees);
   }
@@ -114,7 +114,7 @@ export class GodService {
   public async getProductByID(id: number): Promise<Product> {
     this.products = await this.loadResource('products.json', []);
     for (const prod of this.products) {
-      if (prod.code === id) {
+      if (prod.code == id) {
         return Promise.resolve(prod);
       }
     }
@@ -128,7 +128,7 @@ export class GodService {
 
   public async updateProduct(prod: Product): Promise<Product[]> {
     for (let prodC of this.products) {
-      if (prodC.code === prod.code) {
+      if (prodC.code == prod.code) {
         prodC = prod;
       }
     }
@@ -138,7 +138,7 @@ export class GodService {
 
   public async deleteProduct(prod: Product) : Promise<Product[]> {
     const index = this.products.indexOf(prod);
-    this.products.splice(index);
+    this.products.splice(index,1);
     await this.saveResource('products.json', this.products);
     return Promise.resolve(this.products);
   }
@@ -151,7 +151,7 @@ export class GodService {
   public getReceiptByID(id: number): Receipt {
     this.loadResource('receipts.json', []);
     for (const rec of this.receipts) {
-      if (rec.id === id) {
+      if (rec.id == id) {
         return rec;
       }
     }
@@ -178,7 +178,7 @@ export class GodService {
         categories: product.categories
       }));
     }
-    this.receipts.splice(index);
+    this.receipts.splice(index,1);
     this.saveResource('products.json', this.products);
     this.saveResource('receipts.json', this.receipts);
   }
