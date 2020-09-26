@@ -1,5 +1,8 @@
 <div class="container">
     <form [formGroup]="employeeForm" (submit)="submit()">
+        <div class="title">
+            Create employee
+        </div>
         <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name">

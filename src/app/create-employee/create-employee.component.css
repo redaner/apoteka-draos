@@ -25,3 +25,11 @@ form {
     width: 300px;
     display: inline-block;
 }
+
+
+.title {
+    float: left;
+    font-weight: bold;
+    font-size: 20px;
+    padding-bottom: 10px;
+}

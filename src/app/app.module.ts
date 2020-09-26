@@ -87,7 +87,8 @@ import { CreateProductComponent } from './create-product/create-product.componen
     ReactiveFormsModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
