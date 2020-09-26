@@ -85,7 +85,7 @@ export class CheckoutComponent implements AfterViewInit {
 
   removeCheckoutItem(item: CheckoutItem) {
     const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
-    this.CHECKOUT_DATA.splice(index);
+    this.CHECKOUT_DATA.splice(index,1);
     this.updateCheckoutItems();
   }
 
