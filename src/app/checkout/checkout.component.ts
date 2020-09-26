@@ -45,11 +45,12 @@ export class CheckoutComponent implements AfterViewInit {
   private RECEIPTS_DATA;
   private dataSource;
   private checkoutItems;
-  private invalidInput: boolean = false;
+  private invalidInput = false;
+  private invalidArrayIDs: Array<number> = [];
   private receipt: Receipt;
 
   displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'additional', 'actions'];
-  displayedColumnsCheckout: string[] = ['code','name', 'amount', 'price', 'actions'];
+  displayedColumnsCheckout: string[] = ['code', 'name', 'amount', 'price', 'actions'];
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
@@ -69,7 +70,7 @@ export class CheckoutComponent implements AfterViewInit {
 
   addCheckoutItem(item: Product) {
     const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
-    if(index != -1) {
+    if (index != -1) {
       this.CHECKOUT_DATA[index].amount += 1;
       this.CHECKOUT_DATA[index].price += item.price;
     } else {
@@ -84,8 +85,12 @@ export class CheckoutComponent implements AfterViewInit {
   }
 
   removeCheckoutItem(item: CheckoutItem) {
+    console.log(item);
     const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
-    this.CHECKOUT_DATA.splice(index,1);
+    this.CHECKOUT_DATA.splice(index, 1);
+    const iindex = this.invalidArrayIDs.findIndex(x => x == item.code);
+    if(iindex != -1) this.invalidArrayIDs.splice(iindex, 1);
+    this.invalidInput = this.invalidArrayIDs.length != 0;
     this.updateCheckoutItems();
   }
 
@@ -93,14 +98,16 @@ export class CheckoutComponent implements AfterViewInit {
     this.checkoutItems = new MatTableDataSource(this.CHECKOUT_DATA);
   }
 
+
   findNextID(receipts: Array<any>) {
     let max = -1;
     receipts.forEach(a => { if (a.id > max) { max = a.id; } });
-    return max + 1;
+    return max == -1 ? 1 : max + 1;
   }
 
   mapCheckoutItemsToReceipt() {
     const items: ReceiptItem[] = [];
+    debugger
     this.CHECKOUT_DATA.forEach( x => {
       const pproduct = this.PRODUCT_DATA.find( y => y.code === x.code );
       items.push(new ReceiptItem({
@@ -113,26 +120,34 @@ export class CheckoutComponent implements AfterViewInit {
 
 
   updateAmountAndPrice(event: any, element: CheckoutItem) {
-    console.log(event);
-    if(!Number.isInteger(Number(event.target.value))) {
+    const pIndex = this.PRODUCT_DATA.findIndex(x=> x.code == element.code);
+    let maxValue = pIndex != -1 ? this.PRODUCT_DATA[pIndex].stock : 0;
+    if (!Number.isInteger(Number(event.target.value)) || event.target.value>maxValue) {
       this.invalidInput = true;
-      let index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
-      if(index != -1) {
+      let invalid_index = this.invalidArrayIDs.findIndex(x => x == element.code);
+      if (invalid_index == -1) {
+        this.invalidArrayIDs.push(element.code);
+      }
+      const index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
+      if (index != -1) {
         this.CHECKOUT_DATA[index].price = 0;
         this.updateCheckoutItems();
       }
       return;
     }
+    let iindex = this.invalidArrayIDs.findIndex(x => x == element.code);
+    if(iindex != -1)
+      this.invalidArrayIDs.splice(iindex,1);
     this.invalidInput = false;
-    let pindex = this.PRODUCT_DATA.findIndex(x => x.code == element.code);
-    let index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
-    if(index != -1) {
+    const pindex = this.PRODUCT_DATA.findIndex(x => x.code == element.code);
+    const index = this.CHECKOUT_DATA.findIndex(x => x.code == element.code);
+    if (index != -1) {
       this.CHECKOUT_DATA[index].amount = parseInt(event.target.value, 10);
       this.CHECKOUT_DATA[index].price = Number((parseInt(event.target.value, 10) * this.PRODUCT_DATA[pindex].price).toFixed(2));
       this.updateCheckoutItems();
     }
   }
-
+/*
   mapReceiptToCheckoutItems(receipt: Receipt) {
     this.CHECKOUT_DATA = [];
     receipt.items.forEach( (x: ReceiptItem) => {
@@ -144,15 +159,39 @@ export class CheckoutComponent implements AfterViewInit {
       });
     });
   }
+*/
+  async issueReceipt() {
+    if(this.CHECKOUT_DATA.length == 0) {
+      alert("You cannot issue receipt with no items on it.");
+      return;
+    }
+    this.receipt = new Receipt({
+      id : this.findNextID(this.RECEIPTS_DATA),
+      items : this.mapCheckoutItemsToReceipt(),
+      total : this.calculateTotal(),
+      date : new Date(),
+      employee : 'Mirza Mesihovic'
+    });
 
-  issueReceipt() {
-    this.receipt.id = this.findNextID(this.RECEIPTS_DATA);
-    this.receipt.items = this.mapCheckoutItemsToReceipt();
-    this.receipt.total = this.calculateTotal(),
-    this.receipt.date = new Date();
-    this.receipt.employee = 'Mirza Mesihovic';
-    alert(this.receipt);
+    this.RECEIPTS_DATA = await this.godService.addReceipt(this.receipt);
+    await this.updateProductData(this.receipt);
+
+    this.PRODUCT_DATA = await this.godService.saveResource('products.json', this.PRODUCT_DATA);
+    this.CHECKOUT_DATA = [];
+    this.updateCheckoutItems();
+    //this.updateFilteredItems();
+    alert("USPJESNO IZDAN RACUN");
     console.log(this.receipt);
+  }
+
+  async updateProductData(receipt: Receipt) {
+    receipt.items.forEach(item => {
+      let index = this.PRODUCT_DATA.findIndex( y => y.code == item.product.code);
+      if(index != -1) {
+        this.PRODUCT_DATA[index].stock -= item.amount;
+      }
+    });
+
   }
 
   constructor(private godService: GodService) { }

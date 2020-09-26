@@ -26,7 +26,7 @@ export class GodService {
   public receipts: Receipt[];
   private reqBody: RequestBody;
 
-  private getResourceBody(nameX: string, dataX: Array<any>[]) {
+  private getResourceBody(nameX: string, dataX: Array<any>) {
     return {
       name: nameX,
       data: dataX
@@ -52,14 +52,14 @@ export class GodService {
 
   }
 
-  private async saveResource(name: string, data: Array<any>) {
+  public async saveResource(name: string, data: Array<any>) {
     let ddata;
     await this.http.post(this.endpoints.saveResource, this.getResourceBody(name, data))
     .pipe(map( (res: Array<any>) => { ddata = res; })).toPromise();
     return Promise.resolve(ddata);
   }
 
-  private async loadResource(name: string, data: Array<any>) {
+  public async loadResource(name: string, data: Array<any>) {
     let ddata = [];
     await this.http.post(this.endpoints.getResource, this.getResourceBody(name, data))
     .pipe(map( (res: Array<any>) => { ddata = res; } )).toPromise();
@@ -144,22 +144,23 @@ export class GodService {
   }
 
   public async getAllReceipts(): Promise<Receipt[]> {
-    await this.loadResource('receipts.json', []);
-    return this.receipts;
+    this.receipts = await this.loadResource('receipts.json', []);
+    return Promise.resolve(this.receipts);
   }
 
-  public getReceiptByID(id: number): Receipt {
-    this.loadResource('receipts.json', []);
+  public async getReceiptByID(id: number): Promise<Receipt> {
+    this.receipts = await this.loadResource('receipts.json', []);
     for (const rec of this.receipts) {
       if (rec.id == id) {
-        return rec;
+        return Promise.resolve(rec);
       }
     }
   }
 
-  public addReceipt(rec: Receipt) {
+  public async addReceipt(rec: Receipt) : Promise<Receipt[]> {
     this.receipts.push(rec);
-    this.saveResource('receipts.json', this.receipts);
+    await this.saveResource('receipts.json', this.receipts);
+    return Promise.resolve(this.receipts);
   }
 
   public stornReceipt(rec: Receipt) {

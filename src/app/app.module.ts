@@ -55,6 +55,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateProductComponent } from './create-product/create-product.component';
 import { GodService } from './services/god.service';
 import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angula
     CheckoutComponent,
     CreateItemComponent,
     CreateEmployeeComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +75,7 @@ import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angula
       {path: 'employees', component: EmployeesListComponent},
       {path: 'products', component: ItemsListComponent},
       {path: 'checkout', component: CheckoutComponent},
+      {path: 'login', component: LoginComponent},
       {path: 'logout', component: EmployeesListComponent},
       {path: 'create-employee', component: CreateEmployeeComponent},
       {path: 'create-product', component: CreateProductComponent},
