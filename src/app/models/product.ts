@@ -1,26 +1,20 @@
-import { Category } from './category';
-
 export class Product {
-  id: number;
-  manufacturer: string;
+  code: number;
   name: string;
-  currentAmount: number;
-  minAmount: number;
-  maxAmount: number;
-  perscriptionNeeded: boolean;
+  manufacturer: string;
+  stock: number;
+  perscription: boolean;
   price: number;
   note: string;
-  categories: Category[];
+  categories: string[];
 
   constructor(data?: any) {
       if (!!data) {
-          this.id = data.id;
-          this.manufacturer = data.manufacturer;
+          this.code = data.code;
           this.name = data.name;
-          this.currentAmount = data.currentAmmount;
-          this.minAmount = data.minAmount;
-          this.maxAmount = data.maxAmount;
-          this.perscriptionNeeded = data.perscriptionNeeded;
+          this.manufacturer = data.manufacturer;
+          this.stock = data.stock;
+          this.perscription = data.perscription;
           this.price = data.price;
           this.note = data.note;
           this.categories = data.categories;
