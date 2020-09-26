@@ -45,10 +45,10 @@ export class GodService {
       console.log("Products data: ", x);
       this.products = x.data;
     });
-    /*this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))
+    this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))
     .subscribe( (x: any) => {
       this.receipts = x.data;
-    });*/
+    });
 
   }
 
@@ -62,7 +62,7 @@ export class GodService {
   private async loadResource(name: string, data: Array<any>) {
     let ddata = [];
     await this.http.post(this.endpoints.getResource, this.getResourceBody(name, data))
-    .pipe(map( (res: Array<any>) => {ddata = res; console.log(res)})).toPromise();
+    .pipe(map( (res: Array<any>) => { ddata = res; } )).toPromise();
     return Promise.resolve(ddata);
   }
 
@@ -143,8 +143,8 @@ export class GodService {
     return Promise.resolve(this.products);
   }
 
-  public getAllReceipts(): Receipt[] {
-    this.loadResource('receipts.json', []);
+  public async getAllReceipts(): Promise<Receipt[]> {
+    await this.loadResource('receipts.json', []);
     return this.receipts;
   }
 

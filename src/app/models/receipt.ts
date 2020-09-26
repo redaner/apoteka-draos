@@ -6,13 +6,13 @@ export class Receipt {
   items: ReceiptItem[];
   total: number;
   date: Date;
-  employeeID: number;
+  employee: string;
 
   constructor(data?: any) {
     this.id = data.id;
     this.items = data.items;
     this.total = data.total;
     this.date = data.date;
-    this.employeeID = data.employeeID;
+    this.employee = data.employee;
   }
 }
