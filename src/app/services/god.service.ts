@@ -75,7 +75,7 @@ export class GodService {
   public async getEmployeeByID(id: number): Promise<Employee> {
     this.employees = await this.loadResource('employees.json', []);
     for (const empC of this.employees) {
-      if (empC.id === empC.id) {
+      if (empC.id == id) {
         return Promise.resolve(empC);
       }
     }

@@ -10,6 +10,8 @@ export class CreateProductComponent implements OnInit {
 
   productForm: FormGroup;
   show = false;
+  categories = ['cat1', 'cat2', 'cat3'];
+  selected = -1;
 
   constructor( private formBuilder: FormBuilder) { }
 
@@ -28,12 +30,16 @@ export class CreateProductComponent implements OnInit {
   }
 
   submit() {
-    debugger
+    debugger;
     if (!this.productForm.valid) {
       this.show = true;
       return;
     }
     console.log(this.productForm.value);
+  }
+
+  onChange(event) {
+    console.log(event);
   }
 
 }

@@ -1,5 +1,9 @@
 <div class="container">
+    
     <form [formGroup]="productForm" (submit)="submit()">
+        <div class="title">
+            Create product
+        </div>
         <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name">
@@ -40,16 +44,14 @@
             </mat-error>
         </mat-form-field>
         <br>
-        <!-- <mat-form-field appearance="fill"> -->
-            <mat-label>Perscription needed</mat-label>
-            <mat-radio-group matInput formGroupName="perscriptionNeeded">
-                <mat-radio-button checked value="true">Yes</mat-radio-button>
+        <div>
+            <mat-label class="pers">Perscription needed</mat-label>
+            <mat-radio-group class="pers-radio" matInput formControlName="perscriptionNeeded">
+                <mat-radio-button class="margin-right" checked value="true">Yes</mat-radio-button>
                 <mat-radio-button value="false">No</mat-radio-button>
             </mat-radio-group>
-            <mat-error *ngIf="(show && productForm.controls.maxAmount.errors) || (productForm.controls.maxAmount.touched && productForm.controls.maxAmount.invalid)">
-                <span *ngIf="productForm.controls.maxAmount.errors.required">This field is mandatory.</span>
-            </mat-error>
-        <!-- </mat-form-field> -->
+        </div>
+        <br>
         <br>
         <mat-form-field appearance="fill">
             <mat-label>Price</mat-label>
@@ -64,6 +66,12 @@
             <textarea matInput formControlName="note"></textarea>
           </mat-form-field>
         <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Categories</mat-label>
+            <mat-select formControlName="categories" multiple>
+              <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+            </mat-select>
+        </mat-form-field>
         <button mat-raised-button class="submit-button" type="submit">Submit</button>
     </form>
 </div>

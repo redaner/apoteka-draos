@@ -42,3 +42,7 @@ mat-icon {
     float: right;
 }
 
+.add-new-button:hover {
+    cursor: pointer;
+    background-color: rgb(57, 177, 252);
+}
