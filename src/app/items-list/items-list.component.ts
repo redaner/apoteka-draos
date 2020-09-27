@@ -85,6 +85,8 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
           let product = this.PRODUCT_DATA.find(p => p.code == this.FILTERED_DATA[i].code);
           this.FILTERED_DATA[i] = product;
         }
+
+        this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
       }
     });
   }

@@ -58,9 +58,10 @@ export class EmployeesListComponent implements AfterViewInit {
       }
     });
 
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe(async result => {
       if (result) {
-        this.EMPLOYEE_DATA = this.godService.deleteEmployee(employee);
+        this.EMPLOYEE_DATA = await this.godService.deleteEmployee(employee);
+        this.dataSource = new MatTableDataSource(this.EMPLOYEE_DATA);
       }
     });
   }
