@@ -61,6 +61,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ManagerGuard } from './manager.guard';
+import { ReceiptHistoryComponent } from './receipt-history/receipt-history.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ManagerGuard } from './manager.guard';
     CreateProductComponent,
     ConfirmDialogComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    ReceiptHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -88,6 +90,7 @@ import { ManagerGuard } from './manager.guard';
       {path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: 'edit-employee/:id', component: CreateEmployeeComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: 'edit-product/:id', component: CreateProductComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'receipt-history', component: ReceiptHistoryComponent, canActivate: [AuthGuard]},
       {path: '', redirectTo: 'employees', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,

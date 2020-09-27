@@ -121,9 +121,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
 
   mapCheckoutItemsToReceipt() {
     const items: ReceiptItem[] = [];
-    debugger
     this.CHECKOUT_DATA.forEach( x => {
-      debugger;
       const pproduct = this.PRODUCT_DATA.find( y => y.code === x.code );
       items.push(new ReceiptItem({
         product: pproduct,
@@ -162,19 +160,12 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
       this.updateCheckoutItems();
     }
   }
-/*
-  mapReceiptToCheckoutItems(receipt: Receipt) {
-    this.CHECKOUT_DATA = [];
-    receipt.items.forEach( (x: ReceiptItem) => {
-      this.CHECKOUT_DATA.push({
-        code: x.product.code,
-        name: x.product.name,
-        amount: x.amount,
-        price: x.product.price * x.amount
-      });
-    });
+
+  getCurrentEmployee() : string {
+    let e = JSON.parse(localStorage.getItem("user"));
+    return e.name;
   }
-*/
+
   async issueReceipt() {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -193,7 +184,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
           items : this.mapCheckoutItemsToReceipt(),
           total : this.calculateTotal(),
           date : new Date(),
-          employee : 'Mirza Mesihovic'
+          employee : this.getCurrentEmployee()
         });
 
         this.RECEIPTS_DATA = await this.godService.addReceipt(this.receipt);

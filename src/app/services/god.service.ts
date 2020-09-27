@@ -173,13 +173,14 @@ export class GodService {
       const productIndex = this.products.indexOf(item.product);
       const product = this.products[productIndex];
       this.updateProduct(new Product ({
-        id: product.code,
-        manufacturer: product.manufacturer,
+        code: product.code,
         name: product.name,
+        manufacturer: product.manufacturer,
         stock: product.stock + item.amount,
         prescription: product.prescription,
         price: product.price,
         note: product.note,
+        isDeleted: product.isDeleted,
         categories: product.categories
       }));
     }
