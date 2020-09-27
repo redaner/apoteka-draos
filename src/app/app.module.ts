@@ -87,6 +87,7 @@ import { ManagerGuard } from './manager.guard';
       {path: 'create-employee', component: CreateEmployeeComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: 'edit-employee/:id', component: CreateEmployeeComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'edit-product/:id', component: CreateProductComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: '', redirectTo: 'employees', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,

@@ -8,6 +8,16 @@
     background-color: red;
 }
 
+.restore {
+  color: rgb(0, 157, 255);
+  font-size: 60px;
+  width: 60px;
+}
+
+.restore-color {
+  background-color: rgb(0, 157, 255);
+}
+
 .receipt {
     color: rgb(1, 194, 1);
     font-size: 60px;

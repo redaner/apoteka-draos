@@ -59,8 +59,9 @@
         <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let element">
-            <mat-icon class="edit">edit</mat-icon>
-            <mat-icon class="delete">delete</mat-icon>
+            <mat-icon routerLink="/edit-product/{{element.code}}" class="edit">edit</mat-icon>
+            <mat-icon *ngIf="!element.isDeleted" (click)="deleteProduct(element)" class="delete">delete</mat-icon>
+            <mat-icon *ngIf="element.isDeleted" (click)="restoreProduct(element)" class="restore">restore</mat-icon>
         </td>
         </ng-container>
 

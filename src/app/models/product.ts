@@ -3,9 +3,10 @@ export class Product {
   name: string;
   manufacturer: string;
   stock: number;
-  perscription: boolean;
+  prescription: boolean;
   price: number;
   note: string;
+  isDeleted: boolean;
   categories: string[];
 
   constructor(data?: any) {
@@ -14,9 +15,10 @@ export class Product {
           this.name = data.name;
           this.manufacturer = data.manufacturer;
           this.stock = data.stock;
-          this.perscription = data.perscription;
+          this.prescription = data.prescription;
           this.price = data.price;
           this.note = data.note;
+          this.isDeleted = data.isDeleted;
           this.categories = data.categories;
       }
   }

@@ -27,6 +27,10 @@ mat-icon {
     color: red;
 }
 
+.restore {
+  color: rgb(0, 157, 255);
+}
+
 .add-new {
     margin: 10px;
 }

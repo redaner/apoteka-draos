@@ -1,5 +1,5 @@
 <div class="container">
-    
+
     <form [formGroup]="productForm" (submit)="submit()">
         <div class="title">
             Create product
@@ -22,33 +22,17 @@
         <br>
         <mat-form-field appearance="fill">
             <mat-label>Current amount</mat-label>
-            <input matInput type="number" formControlName="currentAmount">
-            <mat-error *ngIf="(show && productForm.controls.currentAmount.errors) || (productForm.controls.currentAmount.touched && productForm.controls.currentAmount.invalid)">
-                <span *ngIf="productForm.controls.currentAmount.errors.required">This field is mandatory.</span>
-            </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-            <mat-label>Minimum amount</mat-label>
-            <input matInput type="number" formControlName="minAmount">
-            <mat-error *ngIf="(show && productForm.controls.minAmount.errors) || (productForm.controls.minAmount.touched && productForm.controls.minAmount.invalid)">
-                <span *ngIf="productForm.controls.minAmount.errors.required">This field is mandatory.</span>
-            </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-            <mat-label>Maximum amount</mat-label>
-            <input matInput type="number" formControlName="maxAmount">
-            <mat-error *ngIf="(show && productForm.controls.maxAmount.errors) || (productForm.controls.maxAmount.touched && productForm.controls.maxAmount.invalid)">
-                <span *ngIf="productForm.controls.maxAmount.errors.required">This field is mandatory.</span>
+            <input matInput type="number" formControlName="stock">
+            <mat-error *ngIf="(show && productForm.controls.stock.errors) || (productForm.controls.stock.touched && productForm.controls.stock.invalid)">
+                <span *ngIf="productForm.controls.stock.errors.required">This field is mandatory.</span>
             </mat-error>
         </mat-form-field>
         <br>
         <div>
-            <mat-label class="pers">Perscription needed</mat-label>
-            <mat-radio-group class="pers-radio" matInput formControlName="perscriptionNeeded">
-                <mat-radio-button class="margin-right" checked value="true">Yes</mat-radio-button>
-                <mat-radio-button value="false">No</mat-radio-button>
+            <mat-label class="pers">Prescription needed</mat-label>
+            <mat-radio-group class="pers-radio" matInput formControlName="prescription" >
+                <mat-radio-button class="margin-right" [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
             </mat-radio-group>
         </div>
         <br>

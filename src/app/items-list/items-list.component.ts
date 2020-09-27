@@ -1,18 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatDialog } from '@angular/material';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { GodService } from '../services/god.service';
 import { Category } from '../models/category';
-export interface Product {
-  code: number;
-  name: string;
-  manufacturer: string;
-  stock: number;
-  prescription: boolean;
-  price: number;
-  additional: string;
-}
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Product } from '../models/product';
+
 /*
 const PRODUCT_DATA: Product[] = [
   {code: 112, name: 'Brufen', manufacturer: 'Bosnalijek', stock: 12, prescription: false, price: 12.75, additional: 'Lorem ipsum'},
@@ -57,5 +51,43 @@ export class ItemsListComponent implements AfterViewInit {
     return result;
   }
 
-  constructor(private godService: GodService) { }
+  deleteProduct(product: Product) {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Are you sure?',
+        message: 'Are you sure you want to delete product ' + product.name + '?',
+        confirm: 'Delete',
+        icon: 'delete',
+        class: 'delete'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.PRODUCT_DATA = this.godService.deleteProduct(product);
+      }
+    });
+  }
+
+  restoreProduct(product: Product) {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Are you sure?',
+        message: 'Are you sure you want to restore product ' + product.name + ' from deleted products?',
+        confirm: 'Restore',
+        icon: 'restore',
+        class: 'restore'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        product.isDeleted = false;
+        this.PRODUCT_DATA = this.godService.updateProduct(product);
+      }
+    });
+  }
+
+  constructor(private godService: GodService,
+    private dialog: MatDialog) { }
 }

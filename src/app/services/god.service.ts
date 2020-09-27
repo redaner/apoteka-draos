@@ -42,7 +42,7 @@ export class GodService {
     });
     this.http.post(this.endpoints.getResource, this.getResourceBody('products.json', []))
     .subscribe( (x: any) => {
-      console.log("Products data: ", x);
+      console.log('Products data: ', x);
       this.products = x.data;
     });
     this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))
@@ -81,27 +81,27 @@ export class GodService {
     }
   }
 
-  public async addEmployee(emp: Employee) : Promise<Employee[]> {
+  public async addEmployee(emp: Employee): Promise<Employee[]> {
     this.employees.push(emp);
     await this.saveResource('employees.json', this.employees);
     return Promise.resolve(this.employees);
     // Save all emp
   }
 
-  public async updateEmployee(emp: Employee) : Promise<Employee[]> {
+  public async updateEmployee(emp: Employee): Promise<Employee[]> {
     for (let i = 0; i < this.employees.length; i++) {
       if (this.employees[i].id == emp.id) {
         this.employees[i] = emp;
       }
     }
-    
+
     await this.saveResource('employees.json', this.employees);
     return Promise.resolve(this.employees);
   }
 
-  public async deleteEmployee(emp: Employee) : Promise<Employee[]> {
+  public async deleteEmployee(emp: Employee): Promise<Employee[]> {
     const index = this.employees.indexOf(emp);
-    this.employees.splice(index,1);
+    this.employees.splice(index, 1);
     await this.saveResource('employees.json', this.employees);
     return Promise.resolve(this.employees);
   }
@@ -128,18 +128,21 @@ export class GodService {
   }
 
   public async updateProduct(prod: Product): Promise<Product[]> {
-    for (let prodC of this.products) {
-      if (prodC.code == prod.code) {
-        prodC = prod;
+    for (let i = 0; i < this.products.length; i++) {
+      if (this.products[i].code == prod.code) {
+        this.products[i] = prod;
       }
     }
     await this.saveResource('products.json', this.products);
     return Promise.resolve(this.products);
   }
 
-  public async deleteProduct(prod: Product) : Promise<Product[]> {
-    const index = this.products.indexOf(prod);
-    this.products.splice(index,1);
+  public async deleteProduct(prod: Product): Promise<Product[]> {
+    for (let i = 0; i < this.products.length; i++) {
+      if (this.products[i].code == prod.code) {
+        this.products[i].isDeleted = true;
+      }
+    }
     await this.saveResource('products.json', this.products);
     return Promise.resolve(this.products);
   }
@@ -158,7 +161,7 @@ export class GodService {
     }
   }
 
-  public async addReceipt(rec: Receipt) : Promise<Receipt[]> {
+  public async addReceipt(rec: Receipt): Promise<Receipt[]> {
     this.receipts.push(rec);
     await this.saveResource('receipts.json', this.receipts);
     return Promise.resolve(this.receipts);
@@ -174,14 +177,14 @@ export class GodService {
         manufacturer: product.manufacturer,
         name: product.name,
         stock: product.stock + item.amount,
-        perscription: product.perscription,
+        prescription: product.prescription,
         price: product.price,
         note: product.note,
         categories: product.categories
       }));
     }
-    this.receipts.splice(index,1);
-      this.saveResource('products.json', this.products);
+    this.receipts.splice(index, 1);
+    this.saveResource('products.json', this.products);
     this.saveResource('receipts.json', this.receipts);
   }
 
