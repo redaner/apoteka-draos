@@ -236,14 +236,7 @@
   }
 </style>
 
-<div *ngIf="logged" class="menu">
-  <a class="menu-item" routerLink="/employees" routerLinkActive="active">Employees</a>
-  <a class="menu-item" routerLink="/products" routerLinkActive="active">Products</a>
-  <a class="menu-item" routerLink="/checkout" routerLinkActive="active">Checkout</a>
-  <a class="menu-item" routerLink="/logout" routerLinkActive="active">Log out</a>
-</div>
-
-
+<app-navbar></app-navbar>
 <router-outlet></router-outlet>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

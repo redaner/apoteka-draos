@@ -1,6 +1,6 @@
 import { summaryFileName } from '@angular/compiler/src/aot/util';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatIconModule, MatTab } from '@angular/material';
+import { MatDialog, MatIconModule, MatSnackBar, MatTab } from '@angular/material';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { GodService } from '../services/god.service';
@@ -8,6 +8,7 @@ import { Product } from '../models/product';
 import { Receipt } from '../models/receipt';
 import { DatePipe } from '@angular/common';
 import { ReceiptItem } from '../models/receipt-item';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export interface CheckoutItem {
   code: number;
@@ -109,6 +110,7 @@ export class CheckoutComponent implements AfterViewInit {
     const items: ReceiptItem[] = [];
     debugger
     this.CHECKOUT_DATA.forEach( x => {
+      debugger;
       const pproduct = this.PRODUCT_DATA.find( y => y.code === x.code );
       items.push(new ReceiptItem({
         product: pproduct,
@@ -161,27 +163,41 @@ export class CheckoutComponent implements AfterViewInit {
   }
 */
   async issueReceipt() {
-    if(this.CHECKOUT_DATA.length == 0) {
-      alert("You cannot issue receipt with no items on it.");
-      return;
-    }
-    this.receipt = new Receipt({
-      id : this.findNextID(this.RECEIPTS_DATA),
-      items : this.mapCheckoutItemsToReceipt(),
-      total : this.calculateTotal(),
-      date : new Date(),
-      employee : 'Mirza Mesihovic'
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Are you sure?',
+        message: 'Are you sure you want to issue this receipt?',
+        confirm: 'Yes',
+        icon: 'receipt',
+        class: 'receipt'
+      }
     });
 
-    this.RECEIPTS_DATA = await this.godService.addReceipt(this.receipt);
-    await this.updateProductData(this.receipt);
-
-    this.PRODUCT_DATA = await this.godService.saveResource('products.json', this.PRODUCT_DATA);
-    this.CHECKOUT_DATA = [];
-    this.updateCheckoutItems();
-    //this.updateFilteredItems();
-    alert("USPJESNO IZDAN RACUN");
-    console.log(this.receipt);
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result) {
+        this.receipt = new Receipt({
+          id : this.findNextID(this.RECEIPTS_DATA),
+          items : this.mapCheckoutItemsToReceipt(),
+          total : this.calculateTotal(),
+          date : new Date(),
+          employee : 'Mirza Mesihovic'
+        });
+    
+        this.RECEIPTS_DATA = await this.godService.addReceipt(this.receipt);
+        await this.updateProductData(this.receipt);
+    
+        this.PRODUCT_DATA = await this.godService.saveResource('products.json', this.PRODUCT_DATA);
+        this.CHECKOUT_DATA = [];
+        this.updateCheckoutItems();
+        //this.updateFilteredItems();
+        this._snackBar.open("Receipt successfully issued!", "Dismiss", {
+          duration: 2000,
+          panelClass: 'notif-success'
+        });
+        console.log(this.receipt);
+      }
+    });
+    
   }
 
   async updateProductData(receipt: Receipt) {
@@ -194,5 +210,11 @@ export class CheckoutComponent implements AfterViewInit {
 
   }
 
-  constructor(private godService: GodService) { }
+  emptyReceipt() {
+    return this.CHECKOUT_DATA.length == 0;
+  }
+
+  constructor(private godService: GodService,
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar) { }
 }

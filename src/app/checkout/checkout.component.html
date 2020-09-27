@@ -111,7 +111,7 @@
             <span class="total-num">Total: {{calculateTotal()}}</span>
         </div>
         <div>
-            <button class="bill-item" [disabled]="invalidInput" (click)="issueReceipt()">
+            <button class="bill-item" [disabled]="invalidInput || emptyReceipt()" (click)="issueReceipt()">
                 IZDAJ RACUN
             </button>
         </div>

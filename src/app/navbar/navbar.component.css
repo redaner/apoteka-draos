@@ -1,0 +1,21 @@
+.menu-item {
+    padding: 10px;  
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu-item:active {
+    text-decoration: none;
+    color: white;
+}
+
+.menu {
+    background-color: rgb(230, 124, 86);
+    padding: 16px;
+}
+
+.active {
+    border-bottom: 5px solid white;
+}

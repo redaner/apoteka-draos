@@ -51,7 +51,10 @@ export class EmployeesListComponent implements AfterViewInit {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Are you sure?',
-        message: 'Are you sure you want to delete employee ' + employee.name + '?'
+        message: 'Are you sure you want to delete employee ' + employee.name + '?',
+        confirm: 'Delete',
+        icon: 'delete',
+        class: 'delete'
       }
     });
     

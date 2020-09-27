@@ -125,3 +125,12 @@ mat-icon {
 ::-webkit-scrollbar-thumb:hover {
     background: grey; 
 }
+
+button:disabled {
+    opacity: 70%;
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 70%;
+}

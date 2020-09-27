@@ -1,11 +1,11 @@
 <div class="container">
-  <mat-icon class="delete">delete</mat-icon>
+  <mat-icon class="{{data.class}} material-icons">{{data.icon}}</mat-icon>
   <h1 mat-dialog-title>{{data.title}}</h1>
   <div mat-dialog-content>
     {{data.message}}
   </div>
   <div class="buttons">
     <input class="cancel" type="button" value="Cancel" mat-dialog-close="false">
-    <input class="confirm" style="margin:0px 10px;" type="button" value="Delete" mat-dialog-close="true">
+    <input class="{{data.class}}-color confirm" style="margin:0px 10px;" type="button" value="{{data.confirm}}" mat-dialog-close="true">
   </div>
 </div>

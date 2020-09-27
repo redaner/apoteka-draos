@@ -57,6 +57,10 @@ import { GodService } from './services/god.service';
 import { HttpClient, HttpHandler, HttpResponse, HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './login/login.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
+import { ManagerGuard } from './manager.guard';
 
 @NgModule({
   declarations: [
@@ -68,20 +72,21 @@ import { LoginComponent } from './login/login.component';
     CreateEmployeeComponent,
     CreateProductComponent,
     ConfirmDialogComponent,
-    LoginComponent
+    LoginComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot([
-      {path: 'employees', component: EmployeesListComponent},
-      {path: 'products', component: ItemsListComponent},
-      {path: 'checkout', component: CheckoutComponent},
+      {path: 'employees', component: EmployeesListComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'products', component: ItemsListComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
       {path: 'login', component: LoginComponent},
       {path: 'logout', component: EmployeesListComponent},
-      {path: 'create-employee', component: CreateEmployeeComponent},
-      {path: 'create-product', component: CreateProductComponent},
-      {path: 'edit-employee/:id', component: CreateEmployeeComponent},
+      {path: 'create-employee', component: CreateEmployeeComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, ManagerGuard]},
+      {path: 'edit-employee/:id', component: CreateEmployeeComponent, canActivate: [AuthGuard, ManagerGuard]},
       {path: '', redirectTo: 'employees', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,
@@ -98,9 +103,10 @@ import { LoginComponent } from './login/login.component';
     MatFormFieldModule,
     MatRadioModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
-  providers: [GodService],
+  providers: [GodService, AuthService, AuthGuard, ManagerGuard],
   bootstrap: [AppComponent],
   entryComponents: [ConfirmDialogComponent]
 })
