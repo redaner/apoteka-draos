@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../models/employee';
 import { GodService } from '../services/god.service';
@@ -19,7 +20,8 @@ export class CreateEmployeeComponent implements OnInit {
   constructor( private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private godService: GodService,
-    private router: Router) { 
+    private router: Router,
+    private _snackBar: MatSnackBar) { 
     }
 
   ngOnInit() {
@@ -47,19 +49,24 @@ export class CreateEmployeeComponent implements OnInit {
       return;
     }
     
-    this.godService.getAllEmployees().then(employees => {
+    this.godService.getAllEmployees().then(async employees => {
       let maximumID = Math.max.apply(Math, employees.map(function(o) { return o.id; }))
       let newUserID = maximumID + 1;
 
       if (this.id) {
         let updatedEmployee = new Employee(this.employeeForm.value);
         updatedEmployee.id = this.id;
-        this.godService.updateEmployee(updatedEmployee);
+        await this.godService.updateEmployee(updatedEmployee);
       } else {
         let newEmployee = new Employee(this.employeeForm.value);
         newEmployee.id = newUserID;
-        this.godService.addEmployee(newEmployee);
+        await this.godService.addEmployee(newEmployee);
       }
+
+      this._snackBar.open(("Employee successfully " + (this.id ? "updated!" : "created!")), "Dismiss", {
+        duration: 2000,
+        panelClass: 'notif-success'
+      });
 
       this.router.navigate(['/employees']);
     })

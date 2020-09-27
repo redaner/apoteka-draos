@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GodService } from '../services/god.service';
 import { Product } from '../models/product';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-create-product',
@@ -21,7 +22,8 @@ export class CreateProductComponent implements OnInit {
   constructor( private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private godService: GodService,
-    private router: Router) { }
+    private router: Router,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.productForm = this.formBuilder.group({
@@ -48,20 +50,24 @@ export class CreateProductComponent implements OnInit {
       this.show = true;
       return;
     }
-    this.godService.getAllProducts().then(products => {
+    this.godService.getAllProducts().then(async products => {
       let maximumID = Math.max.apply(Math, products.map(function(o) { return o.code; }))
       let newProductID = maximumID + 1;
 
       if (this.id) {
         let updatedProduct = new Product(this.productForm.value);
         updatedProduct.code = this.id;
-        this.godService.updateProduct(updatedProduct);
+        await this.godService.updateProduct(updatedProduct);
       } else {
         let newProduct = new Product(this.productForm.value);
         newProduct.code = newProductID;
-        this.godService.addProduct(newProduct);
+        await this.godService.addProduct(newProduct);
       }
-
+      
+      this._snackBar.open(("Product successfully " + (this.id ? "updated!" : "created!")), "Dismiss", {
+        duration: 2000,
+        panelClass: 'notif-success'
+      });
       this.router.navigate(['/products']);
     });
   }
