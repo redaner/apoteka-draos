@@ -47,7 +47,7 @@
         <span class="receipt-warning" *ngIf="!currentReceipt">Currently there is no receipt selected, click on any receipt in the table to open it's details.</span>
         <span class="receipt-info" *ngIf="currentReceipt">ID: {{currentReceipt.id}}</span>
         <span class="receipt-info" *ngIf="currentReceipt">Issued by: {{currentReceipt.employee}}</span>
-        <span class="receipt-info" *ngIf="currentReceipt">Date: {{this.getDate(currentReceipt.date).toString()}}</span>
+        <span class="receipt-info" *ngIf="currentReceipt">Date: {{currentReceipt.date.toString()}}</span>
         <span class="stavke-title" *ngIf="currentReceipt">Receipt Items</span>
       </div>
       <div>
