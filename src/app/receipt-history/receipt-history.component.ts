@@ -73,7 +73,7 @@ export class ReceiptHistoryComponent implements AfterViewInit {
     this.mapReceiptToCheckoutItems(receipt);
   }
 
-  cancelReceipt(t) {
+  cancelReceipt() {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Are you sure?',
