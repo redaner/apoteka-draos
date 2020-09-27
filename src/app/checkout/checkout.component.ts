@@ -46,10 +46,10 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
   private CHECKOUT_DATA: Array<CheckoutItem> = [];
   private FILTERED_DATA: Array<Product>;
   private RECEIPTS_DATA;
-  private dataSource;
-  private invalidInput = false;
-  private checkoutItems;
-  private filterForm: FormGroup;
+  public dataSource;
+  public invalidInput = false;
+  public checkoutItems;
+  public filterForm: FormGroup;
   private invalidArrayIDs: Array<number> = [];
   private receipt: Receipt;
   categories = ['cat1', 'cat2', 'cat3'];
@@ -195,12 +195,12 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
           date : new Date(),
           employee : 'Mirza Mesihovic'
         });
-    
+
         this.RECEIPTS_DATA = await this.godService.addReceipt(this.receipt);
         await this.updateProductData(this.receipt);
-    
+
         this.PRODUCT_DATA = await this.godService.saveResource('products.json', this.PRODUCT_DATA);
-        
+
         for (let i = 0; i < this.FILTERED_DATA.length; i++) {
           let product = this.PRODUCT_DATA.find(p => p.code == this.FILTERED_DATA[i].code);
           this.FILTERED_DATA[i] = product;
@@ -216,7 +216,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
         console.log(this.receipt);
       }
     });
-    
+
   }
 
   async updateProductData(receipt: Receipt) {
@@ -264,7 +264,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
     })
 
     this.FILTERED_DATA = this.FILTERED_DATA.filter((pd: Product) => {
-      let productCategories = pd.categories;   
+      let productCategories = pd.categories;
       let cats = this.filterForm.value.categories;
       let check = true;
       for(let i=0;i<cats.length;i++) {

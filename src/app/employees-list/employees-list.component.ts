@@ -28,7 +28,7 @@ const EMPLOYEE_DATA: Employee[] = [
 export class EmployeesListComponent implements AfterViewInit {
 
   private EMPLOYEE_DATA;
-  private dataSource;
+  public dataSource;
 
   displayedColumns: string[] = ['id', 'name', 'role', 'birthDate', 'hireDate', 'email', 'actions'];
 
@@ -57,7 +57,7 @@ export class EmployeesListComponent implements AfterViewInit {
         class: 'delete'
       }
     });
-    
+
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.EMPLOYEE_DATA = this.godService.deleteEmployee(employee);

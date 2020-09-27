@@ -22,7 +22,7 @@ const PRODUCT_DATA: Product[] = [
 
 export class ItemsListComponent implements AfterViewInit, OnInit {
 
-  private dataSource;
+  public  dataSource;
   private PRODUCT_DATA;
   private FILTERED_DATA;
   filterForm: FormGroup;
@@ -127,7 +127,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     })
 
     this.FILTERED_DATA = this.FILTERED_DATA.filter((pd: Product) => {
-      let productCategories = pd.categories;   
+      let productCategories = pd.categories;
       let cats = this.filterForm.value.categories;
       let check = true;
       for(let i=0;i<cats.length;i++) {
