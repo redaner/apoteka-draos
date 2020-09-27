@@ -52,7 +52,7 @@
         <br>
         <mat-form-field appearance="fill">
             <mat-label>Categories</mat-label>
-            <mat-select formControlName="categories" multiple>
+            <mat-select multiple>
               <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
             </mat-select>
         </mat-form-field>

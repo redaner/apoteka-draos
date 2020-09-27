@@ -3,9 +3,9 @@ import { MatIconModule, MatDialog } from '@angular/material';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { GodService } from '../services/god.service';
-import { Category } from '../models/category';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Product } from '../models/product';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 /*
 const PRODUCT_DATA: Product[] = [
@@ -20,27 +20,42 @@ const PRODUCT_DATA: Product[] = [
   styleUrls: ['./items-list.component.css']
 })
 
-export class ItemsListComponent implements AfterViewInit {
+export class ItemsListComponent implements AfterViewInit, OnInit {
 
   private dataSource;
   private PRODUCT_DATA;
+  private FILTERED_DATA;
+  filterForm: FormGroup;
+  categories = ['cat1', 'cat2', 'cat3'];
 
 
   displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'category', 'additional', 'actions'];
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
+  ngOnInit() {
+    this.filterForm = this.formBuilder.group({
+      search: [null],
+      categories: [null],
+      prescription: [null]
+    });
+  }
+
   async ngAfterViewInit() {
     this.PRODUCT_DATA = await this.godService.getAllProducts();
-    this.dataSource = new MatTableDataSource(this.PRODUCT_DATA);
+    this.FILTERED_DATA = this.PRODUCT_DATA;
+    this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
     this.dataSource.sort = this.sort;
   }
 
-  public mapCategories(categories: Array<Category>): string {
+  public mapCategories(categories: Array<string>): string {
     let result = '';
     if (categories.length == 0) { return result; }
     else if (categories.length == 1) {
       result += categories[0]
+    }
+    else if (categories.length == 2) {
+      result += categories[0]+', '+categories[1]
     }
     else if (categories.length >= 2) {
       for (let i = 0; i < 2; i++) {
@@ -62,9 +77,15 @@ export class ItemsListComponent implements AfterViewInit {
       }
     });
 
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe(async result => {
       if (result) {
-        this.PRODUCT_DATA = this.godService.deleteProduct(product);
+        debugger
+        this.PRODUCT_DATA = await this.godService.deleteProduct(product);
+
+        for (let i = 0; i < this.FILTERED_DATA.length; i++) {
+          let product = this.PRODUCT_DATA.find(p => p.code == this.FILTERED_DATA[i].code);
+          this.FILTERED_DATA[i] = product;
+        }
       }
     });
   }
@@ -80,14 +101,48 @@ export class ItemsListComponent implements AfterViewInit {
       }
     });
 
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe(async result => {
       if (result) {
         product.isDeleted = false;
-        this.PRODUCT_DATA = this.godService.updateProduct(product);
+        this.PRODUCT_DATA = await this.godService.updateProduct(product);
+
+        for (let i = 0; i < this.FILTERED_DATA.length; i++) {
+          let product = this.PRODUCT_DATA.find(p => p.code == this.FILTERED_DATA[i].code);
+          this.FILTERED_DATA[i] = product;
+        }
       }
     });
   }
 
+  search() {
+    this.FILTERED_DATA = this.PRODUCT_DATA.filter((pd: Product) => {
+      let val = this.filterForm.value.search;
+      if (val == null) {
+        val = "";
+      }
+
+      return pd.code.toString().includes(val) ||
+      pd.name.toLowerCase().includes(val.toLowerCase()) ||
+      pd.manufacturer.toLowerCase().includes(val.toLowerCase())
+    })
+
+    this.FILTERED_DATA = this.FILTERED_DATA.filter((pd: Product) => {
+      let productCategories = pd.categories;   
+      let cats = this.filterForm.value.categories;
+      let check = true;
+      for(let i=0;i<cats.length;i++) {
+        if(!productCategories.includes(cats[i])) {
+          check = false;
+          break;
+        }
+      }
+      return check;
+    })
+
+    this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
+  }
+
   constructor(private godService: GodService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder) { }
 }

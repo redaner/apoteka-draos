@@ -50,3 +50,27 @@ mat-icon {
     cursor: pointer;
     background-color: rgb(57, 177, 252);
 }
+
+.edit {
+    color: rgb(9, 175, 9);
+    outline: none;
+}
+
+.edit:hover {
+    cursor: pointer;
+    color: rgb(77, 240, 77);
+}
+
+.delete {
+    color: red;
+}
+
+.delete:hover {
+    cursor: pointer;
+    color: rgb(255, 137, 137);
+}
+
+.restore:hover {
+    cursor: pointer;
+    opacity: 70%;
+}

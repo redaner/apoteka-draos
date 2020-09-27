@@ -1,10 +1,18 @@
 
 
 <div class="add-new">
-    <mat-form-field class="full-width">
-        <mat-icon class="search-icon" matPrefix>search</mat-icon>
-        <input matInput placeholder="Search products" #input>
-    </mat-form-field>
+    <form [formGroup]="filterForm">
+        <mat-form-field>
+            <mat-icon class="search-icon" matPrefix>search</mat-icon>
+            <input matInput placeholder="Search products" formControlName="search" (input)="search()" #input>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Categories</mat-label>
+            <mat-select (selectionChange)="search()" formControlName="categories" multiple>
+            <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
     <button routerLink="/create-product" class="add-new-button">
       <b class="plus">+ Add new product</b>
     </button>

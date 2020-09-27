@@ -9,6 +9,7 @@ import { Receipt } from '../models/receipt';
 import { DatePipe } from '@angular/common';
 import { ReceiptItem } from '../models/receipt-item';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 export interface CheckoutItem {
   code: number;
@@ -39,26 +40,38 @@ const CHECKOUT_DATA: CheckoutItem[] = [
   styleUrls: ['./checkout.component.css']
 })
 
-export class CheckoutComponent implements AfterViewInit {
+export class CheckoutComponent implements AfterViewInit, OnInit {
 
   private PRODUCT_DATA: Array<Product>;
   private CHECKOUT_DATA: Array<CheckoutItem> = [];
+  private FILTERED_DATA: Array<Product>;
   private RECEIPTS_DATA;
   private dataSource;
-  private checkoutItems;
   private invalidInput = false;
+  private checkoutItems;
+  private filterForm: FormGroup;
   private invalidArrayIDs: Array<number> = [];
   private receipt: Receipt;
+  categories = ['cat1', 'cat2', 'cat3'];
 
-  displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'additional', 'actions'];
+  displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'category', 'additional', 'actions'];
   displayedColumnsCheckout: string[] = ['code', 'name', 'amount', 'price', 'actions'];
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
+  ngOnInit() {
+    this.filterForm = this.formBuilder.group({
+      search: [null],
+      categories: [null],
+      prescription: [null]
+    });
+  }
+
   async ngAfterViewInit() {
     this.PRODUCT_DATA = await this.godService.getAllProducts();
+    this.FILTERED_DATA = this.PRODUCT_DATA.filter((p: Product) => !p.isDeleted)
     this.RECEIPTS_DATA = await this.godService.getAllReceipts();
-    this.dataSource = new MatTableDataSource(this.PRODUCT_DATA);
+    this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
     this.checkoutItems = new MatTableDataSource(this.CHECKOUT_DATA);
     this.dataSource.sort = this.sort;
   }
@@ -187,6 +200,12 @@ export class CheckoutComponent implements AfterViewInit {
         await this.updateProductData(this.receipt);
     
         this.PRODUCT_DATA = await this.godService.saveResource('products.json', this.PRODUCT_DATA);
+        
+        for (let i = 0; i < this.FILTERED_DATA.length; i++) {
+          let product = this.PRODUCT_DATA.find(p => p.code == this.FILTERED_DATA[i].code);
+          this.FILTERED_DATA[i] = product;
+        }
+
         this.CHECKOUT_DATA = [];
         this.updateCheckoutItems();
         //this.updateFilteredItems();
@@ -214,7 +233,54 @@ export class CheckoutComponent implements AfterViewInit {
     return this.CHECKOUT_DATA.length == 0;
   }
 
+  public mapCategories(categories: Array<string>): string {
+    let result = '';
+    if (categories.length == 0) { return result; }
+    else if (categories.length == 1) {
+      result += categories[0]
+    }
+    else if (categories.length == 2) {
+      result += categories[0]+', '+categories[1]
+    }
+    else if (categories.length >= 2) {
+      for (let i = 0; i < 2; i++) {
+        result += categories[i] + ', ';
+      }
+      result += '...';
+    }
+    return result;
+  }
+
+  search() {
+    this.FILTERED_DATA = this.PRODUCT_DATA.filter((pd: Product) => {
+      let val = this.filterForm.value.search;
+      if (val == null) {
+        val = "";
+      }
+
+      return pd.code.toString().includes(val) ||
+      pd.name.toLowerCase().includes(val.toLowerCase()) ||
+      pd.manufacturer.toLowerCase().includes(val.toLowerCase())
+    })
+
+    this.FILTERED_DATA = this.FILTERED_DATA.filter((pd: Product) => {
+      let productCategories = pd.categories;   
+      let cats = this.filterForm.value.categories;
+      let check = true;
+      for(let i=0;i<cats.length;i++) {
+        if(!productCategories.includes(cats[i])) {
+          check = false;
+          break;
+        }
+      }
+      return check;
+    })
+
+    this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
+  }
+
   constructor(private godService: GodService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private formBuilder: FormBuilder) { }
 }
