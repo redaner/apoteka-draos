@@ -16,8 +16,8 @@ export interface RequestBody {
 export class GodService {
 
   private endpoints = {
-    saveResource : 'http://localhost:3000/resources/save',
-    getResource : 'http://localhost:3000/resources/get'
+    saveResource : 'https://apoteka-draos-server.herokuapp.com/resources/save',
+    getResource : 'https://apoteka-draos-server.herokuapp.com/resources/get'
   };
 
 
