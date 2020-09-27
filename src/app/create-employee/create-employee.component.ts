@@ -20,7 +20,6 @@ export class CreateEmployeeComponent implements OnInit {
     private route: ActivatedRoute,
     private godService: GodService,
     private router: Router) { 
-      console.log(route);
     }
 
   ngOnInit() {
@@ -34,11 +33,9 @@ export class CreateEmployeeComponent implements OnInit {
     });
 
     this.id = this.route.snapshot.params['id'];
-    console.log(this.id);
     if (this.id) {
       this.godService.getEmployeeByID(this.id).then(s => {
         this.employee = s;
-        console.log("SSS,",this.employee);
         this.employeeForm.patchValue(this.employee);
       });
     }
@@ -66,7 +63,6 @@ export class CreateEmployeeComponent implements OnInit {
 
       this.router.navigate(['/employees']);
     })
-    console.log(this.employeeForm.value);
   }
 
 }

@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private godService: GodService,
     private authService: AuthService) {
-      console.log(route);
   }
 
   ngOnInit() {
@@ -53,7 +52,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value); 
     }
-    console.log(this.loginForm.value);
   }
 
   updateInvalidInput() {

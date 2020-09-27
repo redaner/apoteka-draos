@@ -35,7 +35,6 @@ export class CreateProductComponent implements OnInit {
     });
 
     this.id = this.route.snapshot.params['id'];
-    console.log(this.id);
     if (this.id) {
       this.godService.getProductByID(this.id).then(s => {
         this.product = s;

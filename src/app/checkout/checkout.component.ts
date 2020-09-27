@@ -99,7 +99,6 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
   }
 
   removeCheckoutItem(item: CheckoutItem) {
-    console.log(item);
     const index = this.CHECKOUT_DATA.findIndex(x => x.code == item.code);
     this.CHECKOUT_DATA.splice(index, 1);
     const iindex = this.invalidArrayIDs.findIndex(x => x == item.code);
@@ -204,7 +203,6 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
           duration: 2000,
           panelClass: 'notif-success'
         });
-        console.log(this.receipt);
       }
     });
 

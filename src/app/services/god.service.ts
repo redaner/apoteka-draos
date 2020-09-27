@@ -37,12 +37,10 @@ export class GodService {
 
     this.http.post(this.endpoints.getResource, this.getResourceBody('employees.json', []))
     .subscribe( (x: any) => {
-      console.log('Sta smo dobili: ', x);
       this.employees = x.data;
     });
     this.http.post(this.endpoints.getResource, this.getResourceBody('products.json', []))
     .subscribe( (x: any) => {
-      console.log('Products data: ', x);
       this.products = x.data;
     });
     this.http.post(this.endpoints.getResource, this.getResourceBody('receipts.json', []))

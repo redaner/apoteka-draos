@@ -79,7 +79,6 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
 
     confirmDialog.afterClosed().subscribe(async result => {
       if (result) {
-        debugger
         this.PRODUCT_DATA = await this.godService.deleteProduct(product);
 
         for (let i = 0; i < this.FILTERED_DATA.length; i++) {
