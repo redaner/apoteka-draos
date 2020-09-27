@@ -56,7 +56,9 @@ mat-icon {
 
 .items {
   width: 60%;
-  display: inline-block;
+  display: inline-flex;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .cart {
@@ -88,9 +90,9 @@ mat-icon {
   opacity: 70%;
 }
 
-.container {
+/* .container {
   display:flex;
-}
+} */
 
 .stavke-title {
   padding: 15px;
@@ -171,4 +173,11 @@ button:disabled {
 button:hover {
   cursor: pointer;
   opacity: 70%;
+}
+
+.title {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 26px;
 }

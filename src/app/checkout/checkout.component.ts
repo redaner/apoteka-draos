@@ -52,7 +52,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
   public filterForm: FormGroup;
   private invalidArrayIDs: Array<number> = [];
   private receipt: Receipt;
-  categories = ['cat1', 'cat2', 'cat3'];
+  categories = ['Digestive', 'Cardiovascular', 'Central nervous', 'Pain', 'Respiratory', 'Contraception', 'Other'];
 
   displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'category', 'additional', 'actions'];
   displayedColumnsCheckout: string[] = ['code', 'name', 'amount', 'price', 'actions'];

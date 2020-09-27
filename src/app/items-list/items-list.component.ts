@@ -26,7 +26,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   private PRODUCT_DATA;
   private FILTERED_DATA;
   filterForm: FormGroup;
-  categories = ['cat1', 'cat2', 'cat3'];
+  categories = ['Digestive', 'Cardiovascular', 'Central nervous', 'Pain', 'Respiratory', 'Contraception', 'Other'];
 
 
   displayedColumns: string[] = ['code', 'name', 'manufacturer', 'stock', 'prescription', 'price', 'category', 'additional', 'actions'];

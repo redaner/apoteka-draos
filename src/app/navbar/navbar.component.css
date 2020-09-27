@@ -1,5 +1,6 @@
 .menu-item {
     padding: 10px;  
+    padding-top: 0px;
     font-size: 16px;
     color: white;
     text-decoration: none;
@@ -12,10 +13,41 @@
 }
 
 .menu {
-    background-color: rgb(230, 124, 86);
+    background-color: #004141;
     padding: 16px;
+    padding-bottom: 2px;
 }
 
 .active {
-    border-bottom: 5px solid white;
+    border-bottom: 5px solid rgb(0, 182, 182);
+}
+
+.menu-item:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
+.menu-items {
+    float: right;
+}
+
+.logo {
+    color: white;
+    font-size: 30px;
+    outline: none;
+}
+
+.logo:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
+.icon {
+    display: inline;
+    position: absolute;
+}
+
+.text {
+    margin-left: 25px;
+    padding-top: 20px;
 }

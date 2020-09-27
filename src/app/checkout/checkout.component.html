@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="title">
+        Checkout
+    </div>
     <div class="items">
         <div class="add-new">
             <form [formGroup]="filterForm">
@@ -48,7 +51,7 @@
 
                 <ng-container matColumnDef="price">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-                <td mat-cell  *matCellDef="let element"> {{element.price}} </td>
+                <td mat-cell  *matCellDef="let element"> {{element.price | number: '1.2-2'}} KM</td>
                 </ng-container>
 
                 <ng-container matColumnDef="category">
@@ -102,7 +105,7 @@
 
                 <ng-container matColumnDef="price">
                     <th class="checkout-item" style="width:100px !important" mat-header-cell *matHeaderCellDef> Price </th>
-                    <td class="checkout-item" mat-cell *matCellDef="let element"> {{element.price}} </td>
+                    <td class="checkout-item" mat-cell *matCellDef="let element"> {{element.price | number: '1.2-2'}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
@@ -121,7 +124,7 @@
             <span>Amount field for each receipt item must contain only integer values
               and be less or equal to amount of products currently in stock.</span>
           </mat-error>
-            <span class="total-num">Total: {{calculateTotal()}}</span>
+            <span class="total-num">Total: {{calculateTotal() | number: '1.2-2'}} KM</span>
         </div>
         <div>
             <button class="bill-item" [disabled]="invalidInput || emptyReceipt()" (click)="issueReceipt()">

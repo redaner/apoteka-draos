@@ -15,7 +15,7 @@ export class CreateProductComponent implements OnInit {
   product: any;
   productForm: FormGroup;
   show = false;
-  categories = ['cat1', 'cat2', 'cat3'];
+  categories = ['Digestive', 'Cardiovascular', 'Central nervous', 'Pain', 'Respiratory', 'Contraception', 'Other'];
   selected = -1;
 
   constructor( private formBuilder: FormBuilder,

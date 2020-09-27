@@ -5,6 +5,7 @@ import { MatDialog, MatTableDataSource, MatSnackBar, MatSort } from '@angular/ma
 import { CheckoutItem } from '../checkout/checkout.component';
 import { ReceiptItem } from '../models/receipt-item';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Product } from '../models/product';
 
 @Component({
   selector: 'app-receipt-history',
@@ -24,11 +25,11 @@ export class ReceiptHistoryComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'date', 'employee', 'receipt-unique-items', 'receipt-total-items', 'total'];
   displayedColumnsCheckout: string[] = ['code', 'name', 'amount', 'price'];
 
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private godService: GodService,
-              private dialog: MatDialog,
-              private _snackBar: MatSnackBar ) { }
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar) { }
 
   getDate(date: string) {
     return new Date(date);
@@ -50,7 +51,7 @@ export class ReceiptHistoryComponent implements AfterViewInit {
 
   mapReceiptToCheckoutItems(receipt: Receipt) {
     this.CHECKOUT_DATA = [];
-    receipt.items.forEach( (x: ReceiptItem) => {
+    receipt.items.forEach((x: ReceiptItem) => {
       this.CHECKOUT_DATA.push({
         code: x.product.code,
         name: x.product.name,
@@ -72,7 +73,7 @@ export class ReceiptHistoryComponent implements AfterViewInit {
     this.mapReceiptToCheckoutItems(receipt);
   }
 
-  cancelReceipt() {
+  cancelReceipt(t) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Are you sure?',
@@ -80,6 +81,39 @@ export class ReceiptHistoryComponent implements AfterViewInit {
         confirm: 'Yes',
         icon: 'receipt',
         class: 'receipt'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(async result => {
+      if (result) {
+        const index = this.RECEIPTS_DATA.indexOf(this.currentReceipt);
+        const products = await this.godService.getAllProducts();
+
+        for (const item of this.currentReceipt.items) {
+          const product = products.filter((p: Product) => p.code == item.product.code)[0];
+          debugger;
+          this.godService.updateProduct(new Product({
+            code: product.code,
+            name: product.name,
+            manufacturer: product.manufacturer,
+            stock: product.stock + item.amount,
+            prescription: product.prescription,
+            price: product.price,
+            note: product.note,
+            isDeleted: product.isDeleted,
+            categories: product.categories
+          }));
+        }
+
+        this.RECEIPTS_DATA.splice(index, 1);
+        this.currentReceipt = null;
+        // this.saveResource('products.json', this.products);
+        let newReceipts = await this.godService.saveResource('receipts.json', this.RECEIPTS_DATA);
+
+        this.RECEIPTS_DATA = newReceipts;
+        this.CHECKOUT_DATA = [];
+        this.dataSource = new MatTableDataSource(this.RECEIPTS_DATA);
+        this.receiptItems = new MatTableDataSource(this.CHECKOUT_DATA);
       }
     });
   }

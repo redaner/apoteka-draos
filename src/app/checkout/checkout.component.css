@@ -26,6 +26,11 @@ mat-icon {
     color: red;
 }
 
+.delete:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
 .add-new {
     margin: 10px;
 }
@@ -138,4 +143,20 @@ button:disabled {
 button:hover {
     cursor: pointer;
     opacity: 70%;
+}
+
+.mat-form-field {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.title {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.table {
+    margin-left: 20px;
 }

@@ -17,7 +17,7 @@ export class GodService {
 
   private endpoints = {
     saveResource : 'https://apoteka-draos-server.herokuapp.com/resources/save',
-    getResource : 'https://apoteka-draos-server.herokuapp.com/resources/get'
+    getResource : 'http://localhost:3000/resources/get'
   };
 
 

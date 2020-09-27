@@ -1,4 +1,6 @@
-
+<div class="title">
+    Products
+</div>
 
 <div class="add-new">
     <form [formGroup]="filterForm">
@@ -51,7 +53,7 @@
 
         <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.price | number: '1.2-2'}} KM</td>
         </ng-container>
 
         <ng-container matColumnDef="category">
