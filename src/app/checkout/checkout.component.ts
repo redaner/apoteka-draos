@@ -2,7 +2,7 @@ import { summaryFileName } from '@angular/compiler/src/aot/util';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatIconModule, MatSnackBar, MatTab } from '@angular/material';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { GodService } from '../services/god.service';
 import { Product } from '../models/product';
 import { Receipt } from '../models/receipt';
@@ -198,7 +198,7 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
 
         this.CHECKOUT_DATA = [];
         this.updateCheckoutItems();
-        //this.updateFilteredItems();
+        this.dataSource = new MatTableDataSource(this.FILTERED_DATA);
         this._snackBar.open("Receipt successfully issued!", "Dismiss", {
           duration: 2000,
           panelClass: 'notif-success'
@@ -215,7 +215,6 @@ export class CheckoutComponent implements AfterViewInit, OnInit {
         this.PRODUCT_DATA[index].stock -= item.amount;
       }
     });
-
   }
 
   emptyReceipt() {

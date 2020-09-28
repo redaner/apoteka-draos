@@ -2,6 +2,10 @@ table {
   width: 100%;
 }
 
+.tabla {
+  width: 100% !important;
+}
+
 span {
   min-width: 100px;
   display: table-cell;
