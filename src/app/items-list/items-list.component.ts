@@ -130,6 +130,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.FILTERED_DATA = this.FILTERED_DATA.filter((pd: Product) => {
       let productCategories = pd.categories;
       let cats = this.filterForm.value.categories;
+      if(!cats) cats = [];
       let check = true;
       for(let i=0;i<cats.length;i++) {
         if(!productCategories.includes(cats[i])) {
