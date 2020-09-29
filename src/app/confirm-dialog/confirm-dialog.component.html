@@ -5,7 +5,7 @@
     {{data.message}}
   </div>
   <div class="buttons">
-    <input class="cancel" type="button" value="Cancel" mat-dialog-close="false">
-    <input class="{{data.class}}-color confirm" style="margin:0px 10px;" type="button" value="{{data.confirm}}" mat-dialog-close="true">
+    <input class="cancel" type="button" value="Cancel" [mat-dialog-close]="false">
+    <input class="{{data.class}}-color confirm" style="margin:0px 10px;" type="button" value="{{data.confirm}}" [mat-dialog-close]="true">
   </div>
 </div>
